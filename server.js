@@ -15,9 +15,7 @@ app.get('/', function(req, res) {
     res.redirect('lib/template.html'); 
    });
 app.get('/files', function(req, res) {
-    var currentDir = dir;
-    var query = req.query.path || '';
-    if (query) currentDir = path.join(dir, query);
+    var currentDir = req.query.path || dir;
     var data = [];
     fs.readdir(currentDir, function(err, files)
     {
