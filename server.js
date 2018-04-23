@@ -15,7 +15,9 @@ app.get('/', function(req, res) {
     res.redirect('lib/template.html'); 
    });
 app.get('/files', function(req, res) {
-    var currentDir = req.query.path || dir;
+    currentDir = dir;
+    var query = req.query.path || '';
+    if (query) currentDir = path.join(dir, query);
     var data = [];
     fs.readdir(currentDir, function(err, files)
     {
@@ -27,9 +29,9 @@ app.get('/files', function(req, res) {
         files.forEach(function(file) {
             var isDirectory = fs.statSync(path.join(currentDir, file)).isDirectory();
             if(isDirectory)
-                data.push({Name: file, IsDirectory: true, Path: path.join(currentDir, file)});
+                data.push({Name: file, IsDirectory: true, Path: path.join(query, file)});
             else
-                data.push({Name: file, IsDirectory: false, Path: path.join(currentDir, file)});
+                data.push({Name: file, IsDirectory: false, Path: path.join(query, file)});
         })
 
         res.json(data);
