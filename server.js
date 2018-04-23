@@ -8,11 +8,13 @@ const PORT = 8000;
 const app = express();
 
 var dir =  process.cwd();
-//var dir = '.'
 
 app.use(express.static(dir)); //current working directory
 app.use(express.static(__dirname)); //module directory
 app.get('/', function(req, res) {
+    res.redirect('lib/template.html'); 
+   });
+app.get('/files', function(req, res) {
     var currentDir = dir;
     var query = req.query.path || '';
     if (query) currentDir = path.join(dir, query);
