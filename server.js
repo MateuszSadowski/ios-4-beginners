@@ -3,11 +3,28 @@ const http = require ("http")
 const fs = require("fs")
 const path = require("path")
 const fileUpload = require("express-fileupload")
+const passport = require("passport")
+const LocalStrategy = require("passport-local").Strategy
 
 const PORT = 8000;
 const app = express();
 
 var dir =  process.cwd();
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+      User.findOne({ username: username }, function(err, user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      });
+    }
+  ));
 
 app.use(express.static(dir)); //current working directory
 app.use(express.static(__dirname)); //module directory
@@ -42,6 +59,8 @@ app.post("/upload", function(req, res) {
     if (!req.files)
       return res.status(400).send("No files were uploaded.");
    
+    checkAuthorization();
+
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let sampleFile = req.files.sampleFile;
     let savePath = currentDir + '/' + sampleFile.name;
@@ -56,3 +75,7 @@ app.post("/upload", function(req, res) {
 
 var server = http.createServer(app);
 server.listen(PORT);
+
+// function checkAuthorization() {
+//     $(document).load(dir + "/lib/login.html");
+// }
