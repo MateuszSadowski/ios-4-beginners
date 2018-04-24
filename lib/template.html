@@ -20,7 +20,16 @@
               <table class="linksholder">
               </table>
       </div>
-
+   <div>
+        <form ref="uploadForm" 
+          id="uploadForm" 
+          action="http://localhost:8000/upload" 
+          method="post" 
+          encType="multipart/form-data">
+            <input type="file" name="sampleFile" />
+            <input type="submit" value="Upload!" />
+        </form>     
+   </div>
   </div> 
     <script src="/lib/jquery-3.3.1.min.js"></script>
     <script src="/lib/bootstrap.min.js"></script>

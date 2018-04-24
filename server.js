@@ -2,7 +2,7 @@ const express = require('express')
 const http = require ('http')
 const fs = require('fs')
 const path = require('path')
-
+const fileUpload = require('express-fileupload')
 
 const PORT = 8000;
 const app = express();
